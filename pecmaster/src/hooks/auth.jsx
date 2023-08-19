@@ -43,14 +43,18 @@ function AuthProvider({ children }) {
         fileUploadForm.append("avatar", avatarFile);
 
         const response = await api.patch("/users/avatar", fileUploadForm);
-        user.avatar = response.data.avatar;
+        user.user.avatar = response.data.avatar;
       }
 
-      console.log('AUTH',user)
       await api.put("/users", user);
-      // localStorage.setItem("@pecmaster:user", JSON.stringify(user));
+      
+      const { user: updatingdUser, updated } = user;
+      updatingdUser.name = updated.name;
+      updatingdUser.email = updated.email;
 
-      setData({ user, token: data.token });
+      localStorage.setItem("@pecmaster:user", JSON.stringify(updatingdUser));
+
+      setData({ user: updatingdUser, token: data.token });
       alert("Perfil atualizado!");
 
     } catch (error) {
