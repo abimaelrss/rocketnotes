@@ -46,8 +46,9 @@ function AuthProvider({ children }) {
         user.avatar = response.data.avatar;
       }
 
+      console.log('AUTH',user)
       await api.put("/users", user);
-      localStorage.setItem("@pecmaster:user", JSON.stringify(user));
+      // localStorage.setItem("@pecmaster:user", JSON.stringify(user));
 
       setData({ user, token: data.token });
       alert("Perfil atualizado!");

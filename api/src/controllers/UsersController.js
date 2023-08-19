@@ -22,8 +22,11 @@ class UserController {
   }
 
   async uptade(request, response) {
-    const { name, email, password, old_password } = request.body.user;
+    const {name, email} = request.body.updated;
+    const { password, old_password } = request.body.user;
     const user_id = request.user.id;
+
+    console.log('START',request.body)
 
     const database = await sqliteConnection();
     const user = await database.get("SELECT * FROM users WHERE id = (?)", [user_id]);
@@ -57,11 +60,11 @@ class UserController {
 
     await database.run(
       `UPDATE users SET 
-      name = ?, 
-      email = ?, 
-      password = ?, 
+      name = (?), 
+      email = (?), 
+      password = (?), 
       updated_at = DATETIME('now') 
-      WHERE id = ?`,
+      WHERE id = (?)`,
       [user.name, user.email, user.password, user_id]
     );
 
